@@ -177,9 +177,13 @@ try:
     data = ec2Client.authorize_security_group_ingress(
         GroupId=security_group_id,
         IpPermissions=[
-            {'IpProtocol': 'tcp',
-             'FromPort': 3306,
-             'ToPort': 3306,
+             {'IpProtocol': 'tcp',
+             'FromPort': 27017,
+             'ToPort': 27017,
+             'IpRanges': [{'CidrIp': '0.0.0.0/0'}]},
+             {'IpProtocol': 'tcp',
+             'FromPort': 4000,
+             'ToPort': 4000,
              'IpRanges': [{'CidrIp': '0.0.0.0/0'}]},
             {'IpProtocol': 'tcp',
              'FromPort': 22,
@@ -253,6 +257,30 @@ instance.wait_until_running()
 
 print(instanceIdDB)
 
+userDataWebServer = ('#!/bin/bash\n'
+                     '# extra repo for RedHat rpms\n'
+                     'yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm\n'
+                     '# essential tools\n'
+                     'yum install -y joe htop git\n'
+                     '\n'
+                     'cat <<EOF | tee /etc/yum.repos.d/mongodb.repo\n[mongodb-org-4.4]\nname=MongoDB Repository\nbaseurl=https://repo.mongodb.org/yum/redhat/8/mongodb-org/4.4/x86_64/\ngpgcheck=1\nenabled=1\ngpgkey=https://www.mongodb.org/static/pgp/server-4.4.asc\nEOF',
+                     '\n'
+                     'echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu-bionic/mongodb-org/6.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list',
+                     '\n'
+                     'apt-get update'
+                     '\n'
+                     'apt-get install -y mongodb-org',
+                     '\n'
+                     'systemctl start mongod',
+                     '\n'
+                     'wget https://github.com/dipeshchau/cloud-computing-grp-12.git'
+                     '\n'
+                     'cd backend-movie-app'
+                     '\n'
+                     'npm install'
+                     '\n'
+                     'npm start'
+                     )
 
 # userDataWebServer = ('#!/bin/bash\n'
 #                      '# extra repo for RedHat rpms\n'
@@ -290,6 +318,7 @@ response = asClient.create_launch_configuration(
     ImageId=imageId,
     InstanceType=instanceType,
     LaunchConfigurationName='movie-app-asg-launchconfig',
+    UserData=userDataWebServer,
     KeyName=keyName,
     SecurityGroups=[
         security_group_id,
