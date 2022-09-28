@@ -12,7 +12,7 @@ const path = require("path")
 require('dotenv').config()
     
 
-const connectionString = process.env.MONGO_URI;
+const connectionString = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/movie-app";
 const PORT = process.env.PORT || 4000
 
 //const schema = new graphql.GraphQLSchema({ query: QueryRoot });
