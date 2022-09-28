@@ -309,6 +309,10 @@ userDataWebServer = ('#!/bin/bash\n'
 
 print("Creating launch configuration...")
 print("------------------------------------")
+a = [security_group_id]
+print(a)
+print(type(a))
+
 
 response = asClient.create_launch_configuration(
     #IamInstanceProfile='my-iam-role',
