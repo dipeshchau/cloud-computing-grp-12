@@ -209,9 +209,9 @@ userDataDB = ('#!/bin/bash\n'
               '# mongodb\n'
               'yup -y install mongodb'
               '\n'
-              'wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -'
+              'wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add -'
               '\n'
-              'echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list'
+              'echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.4.list'
               '\n'
               'apt-get update'
               '\n'
@@ -259,15 +259,15 @@ userDataWebServer = ('#!/bin/bash\n'
                      '# essential tools\n'
                      'yum install -y joe htop git\n'
                      '# mongodb\n'
-                     'yum install -y nodejs mongodb\n'
+                     'yum install -y nodejs\n'
                      '\n'
-                     'wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -',
+                     'cat <<EOF | tee /etc/yum.repos.d/mongodb.repo\n[mongodb-org-4.4]\nname=MongoDB Repository\nbaseurl=https://repo.mongodb.org/yum/redhat/8/mongodb-org/4.4/x86_64/\ngpgcheck=1\nenabled=1\ngpgkey=https://www.mongodb.org/static/pgp/server-4.4.asc\nEOF',
                      '\n'
-                     'echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu-bionic/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list',
+                     'echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu-bionic/mongodb-org/6.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list',
                      '\n'
-                     'sudo apt-get update'
+                     'apt-get update'
                      '\n'
-                     'sudo apt-get install -y mongodb-org',
+                     'apt-get install -y mongodb-org',
                      '\n'
                      'systemctl start mongod',
                      '\n'
@@ -279,6 +279,33 @@ userDataWebServer = ('#!/bin/bash\n'
                      '\n'
                      'npm start'
                      )
+
+# userDataWebServer = ('#!/bin/bash\n'
+#                      '# extra repo for RedHat rpms\n'
+#                      'yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm\n'
+#                      '# essential tools\n'
+#                      'yum install -y joe htop git\n'
+#                      '# mongodb\n'
+#                      'yum install -y nodejs mongodb\n'
+#                      '\n'
+#                      'wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -',
+#                      '\n'
+#                      'echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu-bionic/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list',
+#                      '\n'
+#                      'sudo apt-get update'
+#                      '\n'
+#                      'sudo apt-get install -y mongodb-org',
+#                      '\n'
+#                      'systemctl start mongod',
+#                      '\n'
+#                      'wget https://github.com/dipeshchau/cloud-computing-grp-12.git'
+#                      '\n'
+#                      'cd backend-movie-app'
+#                      '\n'
+#                      'npm install'
+#                      '\n'
+#                      'npm start'
+#                      )
 
 print("Creating launch configuration...")
 print("------------------------------------")
