@@ -258,8 +258,6 @@ userDataWebServer = ('#!/bin/bash\n'
                      'yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm\n'
                      '# essential tools\n'
                      'yum install -y joe htop git\n'
-                     '# mongodb\n'
-                     'yum install -y nodejs\n'
                      '\n'
                      'cat <<EOF | tee /etc/yum.repos.d/mongodb.repo\n[mongodb-org-4.4]\nname=MongoDB Repository\nbaseurl=https://repo.mongodb.org/yum/redhat/8/mongodb-org/4.4/x86_64/\ngpgcheck=1\nenabled=1\ngpgkey=https://www.mongodb.org/static/pgp/server-4.4.asc\nEOF',
                      '\n'
@@ -309,10 +307,6 @@ userDataWebServer = ('#!/bin/bash\n'
 
 print("Creating launch configuration...")
 print("------------------------------------")
-a = [security_group_id]
-print(a)
-print(type(a))
-
 
 response = asClient.create_launch_configuration(
     #IamInstanceProfile='my-iam-role',
@@ -326,6 +320,8 @@ response = asClient.create_launch_configuration(
         security_group_id,
     ],
 )
+print(response)
+print(type(response))
 
 elbv2Client = boto3.client('elbv2')
 
