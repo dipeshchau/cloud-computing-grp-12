@@ -205,19 +205,21 @@ userDataDB = ('#!/bin/bash\n'
               '# extra repo for RedHat rpms\n'
               'yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm\n'
               '# essential tools\n'
-              'yum install -y joe htop git\n'
-              '# mysql\n'
-              'yum install -y mariadb mariadb-server\n'
+                'yum install -y joe htop git\n'
+                     '# mongodb\n'
+                     'yum install -y nodejs mongodb\n'
+                     '\n'
+                     'wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -',
+                     '\n'
+                     'echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list',
+                     '\n'
+                     'sudo apt-get update'
+                     '\n'
+                     'sudo apt-get install -y mongodb-org',
+                     '\n'
+                     'systemctl start mongod',
               '\n'
-              'service mariadb start\n'
-              '\n'
-              'echo "create database cloud_tug_of_war" | mysql -u root\n'
-              '\n'
-              'echo "create table clouds ( cloud_id INT AUTO_INCREMENT, name VARCHAR(255) NOT NULL, value INT, max_value INT, PRIMARY KEY (cloud_id))" | mysql -u root cloud_tug_of_war\n'
-              '\n'
-              'echo "CREATE USER \'cloud_tug_of_war\'@\'%\' IDENTIFIED BY \'cloudpass\';" | mysql -u root\n'
-              'echo "GRANT ALL PRIVILEGES ON cloud_tug_of_war.* TO \'cloud_tug_of_war\'@\'%\';" | mysql -u root\n'
-              'echo "FLUSH PRIVILEGES" | mysql -u root\n'
+              '
               )
 # convert user-data from script with: cat install-mysql | sed "s/^/'/; s/$/\\\n'/"
 
@@ -257,7 +259,7 @@ userDataWebServer = ('#!/bin/bash\n'
                      'yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm\n'
                      '# essential tools\n'
                      'yum install -y joe htop git\n'
-                     '# mysql\n'
+                     '# mongodb\n'
                      'yum install -y nodejs mongodb\n'
                      '\n'
                      'wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -',
