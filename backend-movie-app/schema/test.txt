@@ -1,0 +1,46 @@
+{
+  users{
+    name,
+    favMovieList
+  }
+}
+
+{
+    findUser(name:"dipesh"){
+        name,
+        favMovieList
+    }
+}
+
+
+mutation {
+  addFavMovie(
+   name: "dipesh",
+    movieId: 5
+  ) {
+   _id,
+   name
+  }
+}
+
+mutation {
+  login(
+   name: "dipesh",
+   
+  ) {
+   _id,
+   name
+  }
+}
+
+
+
+mutation {
+  removeFavMovie(
+   name: "dipesh",
+    movieId: 5
+  ) {
+   _id,
+   name
+  }
+}

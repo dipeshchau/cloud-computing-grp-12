@@ -1,0 +1,7 @@
+backend-movie-app/node_modules
+react-movie-app/.env
+
+backend-movie-app/Dockerfile
+backend-movie-app/docker-compose.yml
+
+react-movie-app/node_modules
